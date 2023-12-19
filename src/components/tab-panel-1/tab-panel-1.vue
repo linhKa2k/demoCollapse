@@ -1,0 +1,44 @@
+<template>
+  <a-tabs v-model:activeKey="activeKey" type="card" centered @change="onChangeTabChild()">
+    <a-tab-pane :key="listChildtab[0].key" :tab="listChildtab[0].name">
+      <child-component1
+          :status-collapse="props.childCollapse1"
+          @change-status-collapse="onListenChangePanel($event)"
+      />
+    </a-tab-pane>
+    <a-tab-pane :key="listChildtab[1].key" :tab="listChildtab[1].name">
+      <child-component2
+          v-bind:status-collapse="props.childCollapse2"
+          @change-status-collapse="onListenChangePanel($event)"
+      />
+    </a-tab-pane>
+  </a-tabs>
+</template>
+
+<script setup>
+import { defineProps, ref, defineEmits } from "vue";
+import { ChildComponent1, ChildComponent2 } from './child-component/index'
+
+const props = defineProps({
+  childCollapse1: String,
+  childCollapse2: String,
+  activeTabKey: Number,
+  listChildtab: Array
+})
+
+const emit = defineEmits([ 'changeTab', 'changeStatusCollapse' ])
+const activeKey = ref(props.activeTabKey)
+
+const onChangeTabChild = () => {
+  emit('changeTab', activeKey.value)
+}
+
+const onListenChangePanel = ( statusCollapse ) => {
+  emit('changeStatusCollapse', statusCollapse)
+}
+
+</script>
+
+<style scoped>
+
+</style>
